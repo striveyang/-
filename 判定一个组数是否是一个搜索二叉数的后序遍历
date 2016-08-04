@@ -1,0 +1,65 @@
+//判定一个组数是否是一个搜索二叉数的后序遍历
+#include<iostream>
+using namespace std;
+//bool Ispostsort(int* arr,int left,int right)
+//{
+//	
+//	if (right>=left)
+//		return true;
+//	int i = right;
+//	while (i > 0 && arr[i - 1] > arr[right])//找比arr[right]=root小的数
+//	{
+//		i--;
+//	}                             //  5 7 6   9 11 10  8
+//	int j = i - 1;
+//	for (; j > 0;--j)//找比arr[right]=root小的数
+//	{
+//		if (arr[j] > arr[right])
+//			return false;
+//	}
+//	return Ispostsort(arr,left,j) && Ispostsort(arr,i,right-1);
+//
+//}
+bool Ispostsort(int* arr, int n)
+{
+	if (arr == NULL || n < 0)
+		return false;
+	int root = arr[n];
+	int i = 0;
+	for (; i < n - 1; ++i)
+	{
+		if (arr[i] > root)
+			break;
+	}
+	int j = i;
+	for (; j < n - 1; j++)
+	{
+		if (arr[j] < root)
+			return false;
+	}
+	bool left = true;
+	if (i>0)
+		left = Ispostsort(arr, i-1);
+	bool right = true;
+	if (j < n - 1)
+	{
+		right = Ispostsort(arr+i, n-i-1);
+	}
+	return left&&right;
+
+}
+int main()
+{
+	int str[] = { 5, 7, 6, 9, 11, 10, 8 };
+	int len = sizeof(str) / sizeof(str[0]);
+	bool result=Ispostsort(str,len-1);
+	if (result)
+	{
+		cout << "符合" << endl;
+	}
+	else
+		cout << "不符合" << endl;
+
+	system("pause");
+	return 0;
+}
