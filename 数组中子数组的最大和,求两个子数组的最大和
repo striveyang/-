@@ -1,0 +1,64 @@
+//求数组中子数组的最大和
+int max(int a, int b)
+{
+	if (a > b)
+		return a;
+	else
+		return b;
+}
+int FindMaxArr(int arr[],int len)
+{
+	assert(arr);
+	int result = arr[0];
+	int cur = arr[0];
+	for (int i = 1; i < len; i++)
+	{
+		cur = cur>0 ? cur : 0;
+		cur += arr[i];
+		result = max(cur, result);
+	}
+	return result;
+}
+
+//求两个子数组的最大和
+int max(int a, int b)
+{
+	if (a > b)
+		return a;
+	else
+		return b;
+}
+int FindMaxArr(int arr[], int len)
+{
+	if (arr == NULL || len < 2)  //既然是两个子数组那么长度必须大于2
+		return 0;
+	 int *temp= new int[len];
+	 temp[len - 1] = arr[len - 1];
+	 int cur = arr[len - 1];
+	 for (int i = len - 2; i >= 0; --i)
+	 {
+		 cur = cur>0 ? cur : 0;
+		 cur += arr[i];
+		 temp[i] = max(cur, temp[i + 1]);
+	 }
+	 int result = arr[0] + temp[1];//如果以0为界arr[0]与arr[1]-arr[n-1]两个子数组的和；
+	 int leftmax = arr[0];
+	 cur = arr[0];
+	 for (int i = 1; i < len - 1; ++i)//注意小于len-1
+	 {
+		 cur = cur>0 ? cur : 0;
+		 cur += arr[i];
+		 leftmax = max(cur, leftmax);
+		 result = max(result,leftmax+temp[i+1]);
+	 }
+	 return result;
+}
+int main()
+{
+	int arr[] = { 3, -2, 1, -6, 4, 3, -2, 3 };
+	int len = sizeof(arr) / sizeof(arr[0]);
+	int sum = FindMaxArr(arr, len);
+	cout << sum << endl;
+	system("pause");
+	return 0;
+}
